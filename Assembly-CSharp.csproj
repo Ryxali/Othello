@@ -46,11 +46,13 @@
   </ItemGroup>
   <ItemGroup>
      <Compile Include="Assets\AI\AIController.cs" />
+     <Compile Include="Assets\AI\BoardProspector.cs" />
      <Compile Include="Assets\AI\ProspectiveBoard.cs" />
      <Compile Include="Assets\AI\TileStates.cs" />
      <Compile Include="Assets\BasicBoard.cs" />
      <Compile Include="Assets\BasicTile.cs" />
      <Compile Include="Assets\Board.cs" />
+     <Compile Include="Assets\GameBoard.cs" />
      <Compile Include="Assets\Math3d.cs" />
      <Compile Include="Assets\PlayerController.cs" />
      <Compile Include="Assets\Point2D.cs" />

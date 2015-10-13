@@ -8,7 +8,7 @@ public class BasicBoard {
     private int size = 8;
     private BasicTile[] tiles;
     private int[] pawnsLeft;
-    private readonly Point2D[] moveDirs = new Point2D[] {
+    private static readonly Point2D[] moveDirs = new Point2D[] {
         new Point2D(1, 1),
         new Point2D(0, 1),
         new Point2D(-1, 1),
@@ -22,16 +22,20 @@ public class BasicBoard {
     protected BasicBoard(int size = 8)
     {
         this.size = size;
+        pawnsLeft = new int[2];
     }
 
-    public BasicBoard Create(int size = 8)
+    public static BasicBoard Create(int size = 8)
     {
         BasicBoard b = new BasicBoard(size);
-        b.Reset();
+        b.ResetWithSize(8);
         return b;
     }
 
-    public abstract BasicTile CreateTile(int x, int y);
+    protected virtual BasicTile CreateTile(int x, int y)
+    {
+        return new BasicTile();
+    }
 
     private BasicTile GetTile(int x, int y)
     {
