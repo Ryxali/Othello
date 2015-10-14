@@ -1,27 +1,45 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class PlayerController : MonoBehaviour {
+public class PlayerController : Controller {
 
-    public Board board;
-    private Tile.State curOwner = Tile.State.PLAYER_0;
-	// Update is called once per frame
-	void Update () {
-        if (board == null) return;
-        if (Input.GetMouseButtonDown(0))
+
+    public PlayerController(Tile.State owner, Board board) : base(owner, board)
+    {
+
+    }
+    public override IEnumerator OnGameStart()
+    {
+        yield break;
+    }
+
+    public override IEnumerator TakeTurn()
+    {
+        if (board == null)
         {
-            Vector3 intersect;
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            if (Math3d.LinePlaneIntersection(out intersect, ray.origin, ray.direction, board.normal, board.transform.position))
+            Debug.LogError("Board not set!");
+            yield break;
+        }
+        while (true)
+        {
+            if (Input.GetMouseButtonDown(0))
             {
-                
-                Point2D tilePos = board.WorldToTilePosition(intersect);
-                bool success = board.PlacePawnOnTile(curOwner, tilePos.x, tilePos.y);
-                if (success)
+                Vector3 intersect;
+                Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+                if (Math3d.LinePlaneIntersection(out intersect, ray.origin, ray.direction, board.normal, board.transform.position))
                 {
-                    curOwner = Tile.Other(curOwner);
+                    
+                    Point2D tilePos = board.WorldToTilePosition(intersect);
+                    Debug.Log(tilePos.ToString());
+                    bool success = board.PlacePawnOnTile(owner, tilePos.x, tilePos.y);
+                    if (success)
+                    {
+                        yield break;
+                    }
                 }
             }
+            yield return null;
         }
-	}
+        
+    }
 }

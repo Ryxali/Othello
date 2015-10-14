@@ -27,7 +27,7 @@ public class Board : MonoBehaviour {
         plate.transform.localScale = new Vector3(1, 1, 0) * size;
         plate.transform.localPosition += new Vector3(1, 1) * (size / 2 - 0.5f);
         gameBoard = GameBoard.Create(size, transform, pawn.gameObject);
-        
+        BoardProspector p = new BoardProspector();
 	}
 
     void Update()

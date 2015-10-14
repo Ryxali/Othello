@@ -1,21 +1,29 @@
 ﻿using UnityEngine;
 using System.Collections;
+using MoonSharp.Interpreter;
 
-public class AIController : MonoBehaviour {
+public class AIController : Controller {
+    private BoardProspector prospector;
+    private MonoBehaviour coroutiner;
+    public AIController(Tile.State owner, Board board, MonoBehaviour coroutiner)
+        : base(owner, board)
+    {
+        prospector = new BoardProspector(board);
+        this.coroutiner = coroutiner;
+    }
 
-	// Use this for initialization
-	void Start () {
-	
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
+    public override IEnumerator OnGameStart()
+    {
+        coroutiner.StartCoroutine(prospector.BeginProspectingSession());
+        yield return null;
+    }
 
-
-
-    public 
+    public override IEnumerator TakeTurn()
+    {
+        
+        throw new System.NotImplementedException();
+    }
+    
 
     
 }

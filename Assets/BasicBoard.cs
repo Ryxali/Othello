@@ -32,6 +32,16 @@ public class BasicBoard {
         return b;
     }
 
+    public virtual BasicBoard Copy()
+    {
+        BasicBoard b = Create(size);
+        for (int i = 0; i < size * size; i++ )
+        {
+            b.tiles[i].SetState(tiles[i].state);
+        }
+        return b;
+    }
+
     protected virtual BasicTile CreateTile(int x, int y)
     {
         return new BasicTile();
@@ -40,6 +50,10 @@ public class BasicBoard {
     private BasicTile GetTile(int x, int y)
     {
         return tiles[x + y * size];
+    }
+    public Tile.State GetTileState(int x, int y)
+    {
+        return GetTile(x, y).state;
     }
 
     public virtual void Reset()
@@ -94,6 +108,7 @@ public class BasicBoard {
         if (GetTile(x, y).state != Tile.State.NONE) return false;
         bool hasConverted = false;
         Point2D origin = new Point2D(x, y);
+        if (GetTile(origin.x, origin.y).state != Tile.State.NONE) return false;
         foreach (Point2D moveDir in moveDirs)
         {
             Point2D iter = new Point2D(origin) + moveDir;
@@ -131,22 +146,26 @@ public class BasicBoard {
     public bool IsValidPlacementLocation(Tile.State owner, int x, int y)
     {
         if (owner == Tile.State.NONE) return false;
+
         Point2D origin = new Point2D(x, y);
+        if (GetTile(origin.x, origin.y).state != Tile.State.NONE) return false;
         foreach (Point2D moveDir in moveDirs)
         {
             Point2D iter = new Point2D(origin) + moveDir;
             int converted = 0;
-            bool inBounds;
-            while ((inBounds = InBounds(iter)) && GetTile(iter.x, iter.y).state == Tile.Other(owner))
+            bool inBounds = InBounds(iter);
+            while (inBounds && GetTile(iter.x, iter.y).state == Tile.Other(owner))
             {
                 converted++;
                 iter += moveDir;
+                inBounds = InBounds(iter);
             }
             if (inBounds && converted > 0 && GetTile(iter.x, iter.y).state == owner)
             {
                 return true;
             }
         }
+
         return false;
     }
 
@@ -159,6 +178,7 @@ public class BasicBoard {
             {
                 if (IsValidPlacementLocation(Tile.State.PLAYER_0, x, y))
                 {
+                    Debug.Log(x + ", " + y);
                     return true;
                 }
             }
