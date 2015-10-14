@@ -25,7 +25,12 @@ public class LuaMachine {
         uni["print"] = (System.Action<string>)Print;
         uni["printErr"] = (System.Action<string>)PrintErr;
         uni["printWarn"] = (System.Action<string>)PrintWarn;
+        uni["time"] = (System.Func<float>)GetTime;
         s.Globals["unity"] = uni;
+    }
+
+    private static float GetTime() {
+        return Time.time;
     }
 
     private static void Print(string msg)

@@ -30,7 +30,6 @@ public class PlayerController : Controller {
                 {
                     
                     Point2D tilePos = board.WorldToTilePosition(intersect);
-                    Debug.Log(tilePos.ToString());
                     bool success = board.PlacePawnOnTile(owner, tilePos.x, tilePos.y);
                     if (success)
                     {

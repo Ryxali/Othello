@@ -1,12 +1,14 @@
 ﻿using UnityEngine;
 using System.Collections;
+using MoonSharp.Interpreter.Interop;
 
 /// <summary>
 /// Contains the rules exclusively
 /// </summary>
+[MoonSharp.Interpreter.MoonSharpUserData]
 public class BasicBoard {
     public int size { get; private set; }
-    private BasicTile[] tiles;
+    protected BasicTile[] tiles;
     private int[] pawnsLeft;
     private static readonly Point2D[] moveDirs = new Point2D[] {
         new Point2D(1, 1),
@@ -24,14 +26,14 @@ public class BasicBoard {
         this.size = size;
         pawnsLeft = new int[2];
     }
-
+    [MoonSharpVisible(false)]
     public static BasicBoard Create(int size = 8)
     {
         BasicBoard b = new BasicBoard(size);
         b.ResetWithSize(8);
         return b;
     }
-
+    [MoonSharpVisible(false)]
     public virtual BasicBoard Copy()
     {
         BasicBoard b = Create(size);
@@ -41,7 +43,7 @@ public class BasicBoard {
         }
         return b;
     }
-
+    [MoonSharpVisible(false)]
     protected virtual BasicTile CreateTile(int x, int y)
     {
         return new BasicTile();
@@ -55,7 +57,7 @@ public class BasicBoard {
     {
         return GetTile(x, y).state;
     }
-
+    [MoonSharpVisible(false)]
     public virtual void Reset()
     {
         pawnsLeft[0] = 32;
@@ -70,7 +72,7 @@ public class BasicBoard {
         GetTile(mid - 1, mid).SetState(BasicTile.State.PLAYER_1);
         GetTile(mid - 1, mid - 1).SetState(BasicTile.State.PLAYER_0);
     }
-
+    [MoonSharpVisible(false)]
     public void ResetWithSize(int newSize)
     {
         size = newSize;
@@ -84,12 +86,13 @@ public class BasicBoard {
         }
         Reset();
     }
-
+    
     /// <summary>
     /// Helper function
     /// </summary>
     /// <param name="point"></param>
     /// <returns></returns>
+    [MoonSharpVisible(true)]
     private bool InBounds(Point2D point)
     {
         return 0 <= point.x && point.x < size && 0 <= point.y && point.y < size;
@@ -102,6 +105,7 @@ public class BasicBoard {
     /// <param name="x"></param>
     /// <param name="y"></param>
     /// <returns></returns>
+    [MoonSharpVisible(true)]
     public bool PlacePawnOnTile(Tile.State owner, int x, int y)
     {
         if (owner == Tile.State.NONE) Debug.LogError("Player 'NONE' can't place pawns!");
@@ -143,6 +147,7 @@ public class BasicBoard {
     /// <param name="x"></param>
     /// <param name="y"></param>
     /// <returns></returns>
+    [MoonSharpVisible(true)]
     public bool IsValidPlacementLocation(Tile.State owner, int x, int y)
     {
         if (owner == Tile.State.NONE) return false;
@@ -168,7 +173,7 @@ public class BasicBoard {
 
         return false;
     }
-
+    [MoonSharpVisible(true)]
     public bool CanPlaceAnyMore(Tile.State owner)
     {
         if (GetPawnsLeft(owner) <= 0) return false;
@@ -178,25 +183,26 @@ public class BasicBoard {
             {
                 if (IsValidPlacementLocation(Tile.State.PLAYER_0, x, y))
                 {
-                    Debug.Log(x + ", " + y);
                     return true;
                 }
             }
         }
         return false;
     }
-
+    [MoonSharpVisible(true)]
     public int GetPawnsLeft(Tile.State player)
     {
         if (player == Tile.State.PLAYER_0) return pawnsLeft[0];
         else if (player == Tile.State.PLAYER_1) return pawnsLeft[1];
         return -1;
     }
-
+    [MoonSharpVisible(false)]
     private void DecrementPawnsLeft(Tile.State player)
     {
         if (player == Tile.State.PLAYER_0) pawnsLeft[0]--;
         else if (player == Tile.State.PLAYER_1) pawnsLeft[1]--;
     }
+
+
 
 }

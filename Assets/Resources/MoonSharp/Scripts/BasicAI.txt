@@ -1,26 +1,21 @@
 
 
-function createBoardState()
-	local size = board.getBoardSize()
-	unity.print(size)
-	local boardArr = {}
-	for x = 1, size do
-		boardArr[x] = {}
-		for y = 1, size do
-			local state = board.getTileState(x, y)
-			--unity.print(state)
-			boardArr[x][y] = state
+function onCalculateBestMove()
+	--unity.print(board.currentBoard.isValidPlacementLocation(board.owner, 0, 0))
+	local possiblilities = {}
+	local nPossibilities = 1
+	for x = 0, 7 do
+		for y = 0, 7 do
+			if ai.currentBoard.isValidPlacementLocation(ai.owner, x, y) then
+				possiblilities[nPossibilities] = {x, y}
+				nPossibilities = nPossibilities + 1
+				unity.print("Found One legit!")
+			end
 		end
 	end
-	return boardArr
-end
-
-function onCalculateBestMove()
-	local boardArr = createBoardState()
-	
-	local t = {
-		x = 5,
-		y = 5
-	}
-	return t
+	math.randomseed(unity.time())
+	local rand = math.random(nPossibilities-1)
+	unity.print(rand .. " was chosen!")
+	--unity.print(possiblilities[1].x)
+	return possiblilities[rand]
 end

@@ -8,6 +8,7 @@ public class GameController : MonoBehaviour {
 
     void Start()
     {
+        MoonSharp.Interpreter.UserData.RegisterAssembly();
         player0 = new PlayerController(Tile.State.PLAYER_0, board);
         player1 = new AIController(Tile.State.PLAYER_1, board, this);//new PlayerController(Tile.State.PLAYER_1, board);
         

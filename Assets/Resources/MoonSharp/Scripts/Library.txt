@@ -1,4 +1,4 @@
-
+-- TODO create lua board
 
 function createBoardState()
 	local size = board.getBoardSize()

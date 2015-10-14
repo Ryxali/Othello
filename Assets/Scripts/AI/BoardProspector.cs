@@ -1,10 +1,18 @@
 ﻿using UnityEngine;
 using System.Collections;
 using MoonSharp.Interpreter;
+
+class Test
+{
+    private int Dohickey()
+    {
+        return 3;
+    }
+}
 public class BoardProspector
 {
     Script script;
-    private BasicBoard currentState;
+    private LuaBoard currentState;
     Tile.State owner;
     public Point2D chosenLocation { get; private set; }
     public BoardProspector(Tile.State owner)
@@ -27,30 +35,34 @@ public class BoardProspector
 
         //RegisterEvents();
     }
+    
 
     private void SetBoardState(BasicBoard board)
     {
-        currentState = board;
-        //script.Globals["board", "foo"] = null;
+        currentState = LuaBoard.Create(board);
+        UserData.RegisterType<LuaBoard>();
+        script.Globals["ai", "currentBoard"] = UserData.Create(currentState);
     }
 
     
 
     private void RegisterVars()
     {
-        
+        Table boardTable = new Table(script);
+        boardTable["owner"] = owner;
+        script.Globals["ai"] = boardTable;
         
     }
     private void RegisterFunctions()
     {
-        Table boardTable = new Table(script);
+        /*Table boardTable = new Table(script);
         boardTable["canIPlaceAnyMore"] = (System.Func<bool>)CanIPlaceAnyMore;
         boardTable["getTileState"] = (System.Func<int, int, int>)GetTileState;
         boardTable["canPlaceAt"] = (System.Func<int, int, bool>)IsValidPlacementLocation;
         boardTable["getOwnPawnsLeft"] = (System.Func<int>)GetOwnPawnsLeft;
         boardTable["getOpponentPawnsLeft"] = (System.Func<int>)GetOpponentPawnsLeft;
         boardTable["getBoardSize"] = (System.Func<int>)GetBoardSize;
-        script.Globals["board"] = boardTable;
+        script.Globals["board"] = boardTable;*/
     }
 
     private void RegisterEvents()
@@ -196,4 +208,5 @@ public class BoardProspector
         }
         return currentState.size;
     }
+
 }
