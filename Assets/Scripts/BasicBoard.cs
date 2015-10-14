@@ -5,7 +5,7 @@ using System.Collections;
 /// Contains the rules exclusively
 /// </summary>
 public class BasicBoard {
-    private int size = 8;
+    public int size { get; private set; }
     private BasicTile[] tiles;
     private int[] pawnsLeft;
     private static readonly Point2D[] moveDirs = new Point2D[] {
@@ -51,7 +51,7 @@ public class BasicBoard {
     {
         return tiles[x + y * size];
     }
-    public Tile.State GetTileState(int x, int y)
+    public BasicTile.State GetTileState(int x, int y)
     {
         return GetTile(x, y).state;
     }
@@ -60,21 +60,21 @@ public class BasicBoard {
     {
         pawnsLeft[0] = 32;
         pawnsLeft[1] = 32;
-        foreach (Tile t in tiles)
+        foreach (BasicTile t in tiles)
         {
-            t.SetState(Tile.State.NONE);
+            t.SetState(BasicTile.State.NONE);
         }
         int mid = size / 2;
-        GetTile(mid, mid).SetState(Tile.State.PLAYER_0);
-        GetTile(mid, mid - 1).SetState(Tile.State.PLAYER_1);
-        GetTile(mid - 1, mid).SetState(Tile.State.PLAYER_1);
-        GetTile(mid - 1, mid - 1).SetState(Tile.State.PLAYER_0);
+        GetTile(mid, mid).SetState(BasicTile.State.PLAYER_0);
+        GetTile(mid, mid - 1).SetState(BasicTile.State.PLAYER_1);
+        GetTile(mid - 1, mid).SetState(BasicTile.State.PLAYER_1);
+        GetTile(mid - 1, mid - 1).SetState(BasicTile.State.PLAYER_0);
     }
 
     public void ResetWithSize(int newSize)
     {
         size = newSize;
-        tiles = new Tile[size * size];
+        tiles = new BasicTile[size * size];
         for (int y = 0; y < size; y++)
         {
             for (int x = 0; x < size; x++)

@@ -9,7 +9,7 @@ using System.Collections;
 public class Board : MonoBehaviour {
     [Range(4, 16), SerializeField]
     private int size = 8;
-
+    public int boardSize { get { return size; } }
     private GameBoard gameBoard;
 
     public Vector3 normal { get { return transform.forward; } }
@@ -19,15 +19,17 @@ public class Board : MonoBehaviour {
     public MeshRenderer pawn;
     public Transform plate;
 
-    
 
+    public BasicBoard CreateBoardCopy()
+    {
+        return gameBoard.Copy();
+    }
 	void Start () {
         
         plate.GetComponent<MeshRenderer>().material.mainTextureScale = Vector2.one * size / 2;
         plate.transform.localScale = new Vector3(1, 1, 0) * size;
         plate.transform.localPosition += new Vector3(1, 1) * (size / 2 - 0.5f);
         gameBoard = GameBoard.Create(size, transform, pawn.gameObject);
-        BoardProspector p = new BoardProspector();
 	}
 
     void Update()

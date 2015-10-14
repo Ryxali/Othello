@@ -6,6 +6,7 @@ public class BoardProspector
     Script script;
     private BasicBoard currentState;
     Tile.State owner;
+    public Point2D chosenLocation { get; private set; }
     public BoardProspector(Tile.State owner)
     {
         this.owner = owner;
@@ -16,19 +17,20 @@ public class BoardProspector
         //script.LoadFile(Application.dataPath + "/");
         
         
-        script.DoString(@"
+        /*script.DoString(@"
             function foo()
                 unity.print('goodie')
             end
         
-        ");
+        ");*/
+        script.DoFile(Application.dataPath + "/Resources/MoonSharp/Scripts/BasicAI");
 
         //RegisterEvents();
     }
 
     private void SetBoardState(BasicBoard board)
     {
-        currentState = board.Copy();
+        currentState = board;
         //script.Globals["board", "foo"] = null;
     }
 
@@ -47,6 +49,7 @@ public class BoardProspector
         boardTable["canPlaceAt"] = (System.Func<int, int, bool>)IsValidPlacementLocation;
         boardTable["getOwnPawnsLeft"] = (System.Func<int>)GetOwnPawnsLeft;
         boardTable["getOpponentPawnsLeft"] = (System.Func<int>)GetOpponentPawnsLeft;
+        boardTable["getBoardSize"] = (System.Func<int>)GetBoardSize;
         script.Globals["board"] = boardTable;
     }
 
@@ -62,7 +65,8 @@ public class BoardProspector
 
     private DynValue CallLuaFunction(string functionName)
     {
-        return script.Call(script.Globals["foo"]);
+        if (script.Globals[functionName] == null) return null;
+        return script.Call(script.Globals[functionName]);
     }
 
     public void StartProspectingTimer(float time)
@@ -74,11 +78,47 @@ public class BoardProspector
     /// the information stored within itself until aborted.
     /// </summary>
     /// <returns></returns>
-    public IEnumerator BeginProspectingSession()
+    public IEnumerator BeginProspectingSession(BasicBoard board)
     {
-        Debug.Log("1");
+        SetBoardState(board);
         yield return null;
-        Debug.Log("2");
+        DynValue val = CallLuaFunction("onCalculateBestMove");
+        if(val == null) 
+        {
+            Debug.LogWarning("onCalculateBestMove not implemented in script!");
+        }
+        int x = 0;
+        int y = 0;
+        
+        if (val.Type == DataType.Table)
+        {
+            
+            //
+            if (val.Table.Get("x").Type == DataType.Number)
+            {
+                x = (int)val.Table.Get("x").Number;
+            }
+            else if (val.Table.Get(1).Type == DataType.Number)
+            {
+                x = (int)val.Table.Get(1).Number;
+            }
+             
+            
+            //
+            if (val.Table.Get("y").Type == DataType.Number)
+            {
+                y = (int)val.Table.Get("y").Number;
+            }
+            else if (val.Table.Get(2).Type == DataType.Number)
+            {
+                y = (int)val.Table.Get(2).Number;
+            }
+             
+            
+        }
+        chosenLocation = new Point2D(x, y);
+        Debug.Log("I project " + chosenLocation + " to be the best location!");
+        
     }
     // Callback functions to access the board.
     private bool CanIPlaceAnyMore()
@@ -139,11 +179,21 @@ public class BoardProspector
             Debug.LogWarning("You are attempting to access the board from script before initializing!");
             return 0;
         }
-        Tile.State state = currentState.GetTileState(x, y);
+        Tile.State state = currentState.GetTileState(x-1, y-1);
         if(state == owner)
             return 1;
         else if (state == Tile.Other(owner))
             return -1;
         else return 0;
+    }
+
+    private int GetBoardSize()
+    {
+        if (currentState == null)
+        {
+            Debug.LogWarning("You are attempting to access the board from script before initializing!");
+            return 0;
+        }
+        return currentState.size;
     }
 }
