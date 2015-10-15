@@ -181,7 +181,7 @@ public class BasicBoard {
         {
             for (int y = 0; y < size; y++)
             {
-                if (IsValidPlacementLocation(Tile.State.PLAYER_0, x, y))
+                if (IsValidPlacementLocation(owner, x, y))
                 {
                     return true;
                 }
