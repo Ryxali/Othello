@@ -2,6 +2,7 @@
 using System.Collections;
 
 public class BasicTile {
+    
     public enum State
     {
         NONE, PLAYER_0, PLAYER_1
@@ -12,6 +13,7 @@ public class BasicTile {
         else if (state == State.PLAYER_1) return State.PLAYER_0;
         else return State.NONE;
     }
+    
     public State state { get; protected set; }
 
     public BasicTile()

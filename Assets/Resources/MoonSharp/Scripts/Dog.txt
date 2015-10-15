@@ -1,0 +1,21 @@
+
+
+function onCalculateBestMove()
+	--unity.print(board.currentBoard.isValidPlacementLocation(board.owner, 0, 0))
+	local possiblilities = {}
+	local nPossibilities = 1
+	for x = 0, 7 do
+		for y = 0, 7 do
+			if ai.currentBoard.isValidPlacementLocation(ai.owner, x, y) then
+				possiblilities[nPossibilities] = {x, y}
+				nPossibilities = nPossibilities + 1
+				unity.print("Found One legit!")
+			end
+		end
+	end
+	math.randomseed(unity.time())
+	local rand = math.random(nPossibilities-1)
+	unity.print(rand .. " was chosen!")
+	--unity.print(possiblilities[1].x)
+	return possiblilities[rand]
+end

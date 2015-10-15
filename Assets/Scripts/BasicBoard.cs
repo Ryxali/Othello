@@ -20,6 +20,42 @@ public class BasicBoard {
         new Point2D(0, -1),
         new Point2D(1, -1)
     };
+    [MoonSharp.Interpreter.MoonSharpUserData]
+    public class Score
+    {
+        public Score(int p0, int p1, int none)
+        {
+            player0 = p0;
+            player1 = p1;
+            this.none = none;
+        }
+        public int this[BasicTile.State state]
+        {
+
+            get
+            {
+                if (state == BasicTile.State.PLAYER_0) return player0;
+                if (state == BasicTile.State.PLAYER_1) return player1;
+                return none;
+            }
+
+        }
+        public int this[int state]
+        {
+
+            get
+            {
+                if (state == 1) return player0;
+                if (state == 2) return player1;
+                return none;
+            }
+
+        }
+
+        private int none;
+        private int player0;
+        private int player1;
+    }
 
     protected BasicBoard(int size = 8)
     {
@@ -202,7 +238,20 @@ public class BasicBoard {
         if (player == Tile.State.PLAYER_0) pawnsLeft[0]--;
         else if (player == Tile.State.PLAYER_1) pawnsLeft[1]--;
     }
-
-
+    [MoonSharpVisible(true)]
+    public Score GetScore()
+    {
+        int p0 = 0;
+        int p1 = 0;
+        int none = 0;
+        for (int i = 0; i < size * size ; i++)
+        {
+            BasicTile.State s = tiles[i].state;
+            if (s == BasicTile.State.PLAYER_0) p0++;
+            else if (s == BasicTile.State.PLAYER_1) p1++;
+            else none++;
+        }
+        return new Score(p0, p1, none);
+    }
 
 }

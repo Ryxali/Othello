@@ -41,6 +41,7 @@ public class BoardProspector
     {
         currentState = LuaBoard.Create(board);
         UserData.RegisterType<LuaBoard>();
+        UserData.RegisterType<BasicBoard.Score>();
         script.Globals["ai", "currentBoard"] = UserData.Create(currentState);
     }
 
@@ -93,7 +94,7 @@ public class BoardProspector
     public IEnumerator BeginProspectingSession(BasicBoard board)
     {
         SetBoardState(board);
-        yield return null;
+        yield return new WaitForSeconds(1.0f);
         DynValue val = CallLuaFunction("onCalculateBestMove");
         if(val == null) 
         {
@@ -129,7 +130,6 @@ public class BoardProspector
             
         }
         chosenLocation = new Point2D(x, y);
-        Debug.Log("I project " + chosenLocation + " to be the best location!");
         
     }
     // Callback functions to access the board.

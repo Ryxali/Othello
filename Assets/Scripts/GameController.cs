@@ -41,5 +41,10 @@ public class GameController : MonoBehaviour {
             }
         }
         Debug.Log("End of match");
+        Debug.Log("Score:");
+        int p0 = 0;
+        int p1 = 0;
+
+        //Debug.Log("Player 1: " + player0.board.)
     }
 }

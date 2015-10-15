@@ -11,7 +11,7 @@ public class Board : MonoBehaviour {
     private int size = 8;
     public int boardSize { get { return size; } }
     private GameBoard gameBoard;
-
+    
     public Vector3 normal { get { return transform.forward; } }
     
     
@@ -89,4 +89,6 @@ public class Board : MonoBehaviour {
     {
         return gameBoard.GetPawnsLeft(player);
     }
+
+    
 }
