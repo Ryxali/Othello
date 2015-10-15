@@ -18,9 +18,7 @@ public class BoardProspector
     public BoardProspector(Tile.State owner)
     {
         this.owner = owner;
-        script = LuaMachine.Create();
-        RegisterVars();
-        RegisterFunctions();
+        
         
         //script.LoadFile(Application.dataPath + "/");
         
@@ -31,9 +29,28 @@ public class BoardProspector
             end
         
         ");*/
-        script.DoFile(Application.dataPath + "/Resources/MoonSharp/Scripts/BasicAI");
+        
+        //script.DoFile(Application.dataPath + "/Resources/MoonSharp/Scripts/BasicAI");
 
         //RegisterEvents();
+    }
+
+    public IEnumerator LoadScript(string aiScriptName)
+    {
+        script = LuaMachine.Create();
+        RegisterVars();
+        RegisterFunctions();
+        WWW loader = new WWW("file://" + Application.streamingAssetsPath + "/" + aiScriptName + ".txt");
+        yield return loader;
+
+        if (loader.error != "")
+        {
+            script.DoFile(Application.dataPath + "/Resources/MoonSharp/Scripts/BasicAI");
+        }
+        else
+        {
+            script.DoString(loader.text);
+        }
     }
     
 

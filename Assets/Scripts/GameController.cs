@@ -5,17 +5,35 @@ public class GameController : MonoBehaviour {
     public Board board;
     public Controller player0;
     public Controller player1;
-
+    public GameMenu gameMenu;
     void Start()
     {
         MoonSharp.Interpreter.UserData.RegisterAssembly();
         player0 = new PlayerController(Tile.State.PLAYER_0, board);
-        player1 = new AIController(Tile.State.PLAYER_1, board, this);//new PlayerController(Tile.State.PLAYER_1, board);
+        //new PlayerController(Tile.State.PLAYER_1, board);
+        //System.IO.Directory.GetFiles(Application.dataPath + "/Resources")
+        string[] scripts = System.IO.Directory.GetFiles(Application.streamingAssetsPath + "/AIScripts/", "*.txt");
+        //object [] scripts = Resources.LoadAll("MoonSharp/Scripts/");
+        for (int i = 0; i < scripts.Length; i++)
+        {
+
+            string s = scripts[i];
+            gameMenu.scriptSelection.options.Add(new UnityEngine.UI.Dropdown.OptionData(s.Substring(s.LastIndexOf("/")+1).Replace(".txt", "")));
+        }
+        gameMenu.scriptSelection.captionText.text = gameMenu.scriptSelection.options[0].text;
         
+    }
+
+    public void StartGame()
+    {
+        gameMenu.gameObject.SetActive(false);
+        string target = gameMenu.scriptSelection.captionText.text;//gameMenu.scriptSelection.options[gameMenu.scriptSelection.value].text;
+        AIController ai = new AIController(Tile.State.PLAYER_1, board, this, target);
+        player1 = ai;
         StartCoroutine(StartSession());
     }
 
-    IEnumerator StartSession()
+    private IEnumerator StartSession()
     {
         yield return null;
         yield return StartCoroutine(player0.OnGameStart());
