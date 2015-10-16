@@ -47,7 +47,10 @@ public class Board : MonoBehaviour {
         gameBoard.ResetWithSize(newSize);
     }
 
-    
+    public BasicBoard.Score getScore()
+    {
+        return gameBoard.GetScore();
+    }
 
     /// <summary>
     /// Places a Pawn on the specified tile should the rules permit it.

@@ -9,27 +9,33 @@ public class GameController : MonoBehaviour {
     void Start()
     {
         MoonSharp.Interpreter.UserData.RegisterAssembly();
-        player0 = new PlayerController(Tile.State.PLAYER_0, board);
+        //player0 = new PlayerController(Tile.State.PLAYER_0, board);
         //new PlayerController(Tile.State.PLAYER_1, board);
         //System.IO.Directory.GetFiles(Application.dataPath + "/Resources")
-        string[] scripts = System.IO.Directory.GetFiles(Application.streamingAssetsPath + "/AIScripts/", "*.txt");
-        //object [] scripts = Resources.LoadAll("MoonSharp/Scripts/");
-        for (int i = 0; i < scripts.Length; i++)
-        {
-
-            string s = scripts[i];
-            gameMenu.scriptSelection.options.Add(new UnityEngine.UI.Dropdown.OptionData(s.Substring(s.LastIndexOf("/")+1).Replace(".txt", "")));
-        }
-        gameMenu.scriptSelection.captionText.text = gameMenu.scriptSelection.options[0].text;
+        
         
     }
 
     public void StartGame()
     {
         gameMenu.gameObject.SetActive(false);
-        string target = gameMenu.scriptSelection.captionText.text;//gameMenu.scriptSelection.options[gameMenu.scriptSelection.value].text;
-        AIController ai = new AIController(Tile.State.PLAYER_1, board, this, target);
-        player1 = ai;
+        
+        if (gameMenu.player0Dropdown.AISelected())
+        {
+            player0 = new AIController(Tile.State.PLAYER_0, board, this, gameMenu.player0Dropdown.GetSelectedScriptName());
+        }
+        else
+        {
+            player0 = new PlayerController(Tile.State.PLAYER_0, board);
+        }
+        if (gameMenu.player1Dropdown.AISelected())
+        {
+            player1 = new AIController(Tile.State.PLAYER_1, board, this, gameMenu.player1Dropdown.GetSelectedScriptName());
+        }
+        else
+        {
+            player1 = new PlayerController(Tile.State.PLAYER_1, board);
+        }
         StartCoroutine(StartSession());
     }
 
@@ -60,8 +66,11 @@ public class GameController : MonoBehaviour {
         }
         Debug.Log("End of match");
         Debug.Log("Score:");
-        int p0 = 0;
-        int p1 = 0;
+        BasicBoard.Score s = board.getScore();
+        int p0 = s[BasicTile.State.PLAYER_0];
+        int p1 = s[BasicTile.State.PLAYER_1];
+        Debug.Log("Player 1: " + p0);
+        Debug.Log("player 2: " + p1);
 
         //Debug.Log("Player 1: " + player0.board.)
     }

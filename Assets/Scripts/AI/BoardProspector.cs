@@ -40,11 +40,13 @@ public class BoardProspector
         script = LuaMachine.Create();
         RegisterVars();
         RegisterFunctions();
-        WWW loader = new WWW("file://" + Application.streamingAssetsPath + "/" + aiScriptName + ".txt");
+        Debug.Log(Application.streamingAssetsPath + "/AiScripts/" + aiScriptName + ".txt");
+        WWW loader = new WWW("file://" + Application.streamingAssetsPath + "/AiScripts/" + aiScriptName + ".txt");
         yield return loader;
 
-        if (loader.error != "")
+        if (loader.error != null)
         {
+            Debug.LogError(loader.error);
             script.DoFile(Application.dataPath + "/Resources/MoonSharp/Scripts/BasicAI");
         }
         else
