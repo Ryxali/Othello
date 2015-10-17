@@ -1,5 +1,6 @@
 ﻿using MoonSharp.Interpreter;
 using UnityEngine;
+using MoonSharp.Interpreter.Interop;
 public class LuaMachine {
     /// <summary>
     /// Creates a Script object and adds a predefined
@@ -46,4 +47,5 @@ public class LuaMachine {
     {
         Debug.LogError(msg);
     }
+    
 }

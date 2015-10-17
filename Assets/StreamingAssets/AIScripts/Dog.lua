@@ -3,8 +3,8 @@
 function onCalculateBestMove()
 	local possiblilities = {}
 	local nPossibilities = 1
-	for x = 0, 7 do
-		for y = 0, 7 do
+	for x = 0, ai.currentBoard.size-1 do
+		for y = 0, ai.currentBoard.size-1 do
 			if ai.currentBoard.isValidPlacementLocation(ai.owner, x, y) then
 				possiblilities[nPossibilities] = {x, y}
 				nPossibilities = nPossibilities + 1

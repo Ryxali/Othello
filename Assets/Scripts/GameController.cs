@@ -25,7 +25,7 @@ public class GameController : MonoBehaviour {
     public void StartGame()
     {
         gameMenu.mainmenuPanel.SetActive(false);
-        
+        board.Reset();
         if (gameMenu.player0Dropdown.AISelected())
         {
             player0 = new AIController(Tile.State.PLAYER_0, board, this, gameMenu.player0Dropdown.GetSelectedScriptName());
@@ -45,9 +45,17 @@ public class GameController : MonoBehaviour {
         StartCoroutine(StartSession());
     }
 
+    private void UpdateScores()
+    {
+        BasicBoard.Score score = board.getScore();
+        gameMenu.scorePlayer0.text = score[BasicTile.State.PLAYER_0].ToString();
+        gameMenu.scorePlayer1.text = score[BasicTile.State.PLAYER_1].ToString();
+    }
+
     private IEnumerator StartSession()
     {
         yield return null;
+        UpdateScores();
         yield return StartCoroutine(player0.OnGameStart());
         yield return StartCoroutine(player1.OnGameStart());
         bool running = true;
@@ -56,9 +64,11 @@ public class GameController : MonoBehaviour {
             if (board.CanPlaceAnyMore(player0.owner))
             {
                 yield return StartCoroutine(player0.TakeTurn());
+                UpdateScores();
                 if (board.CanPlaceAnyMore(player1.owner))
                 {
                     yield return StartCoroutine(player1.TakeTurn());
+                    UpdateScores();
                 }
                 else
                 {

@@ -13,7 +13,7 @@ public class GameBoard : BasicBoard {
     public static GameBoard Create(int size, Transform parent, GameObject tilePrefab)
     {
         GameBoard b = new GameBoard(size, parent, tilePrefab);
-        b.ResetWithSize(8);
+        b.ResetWithSize(size);
         return b;
     }
 

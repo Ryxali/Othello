@@ -8,7 +8,8 @@ public class GameMenu : MonoBehaviour {
     public Button StartButton;
     public GameObject mainmenuPanel;
     public GameObject endgamePanel;
-
+    public Text scorePlayer0;
+    public Text scorePlayer1;
     void Start()
     {
         string[] scripts = System.IO.Directory.GetFiles(Application.streamingAssetsPath + "/AIScripts/", "*.lua");

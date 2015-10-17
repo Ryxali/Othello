@@ -7,7 +7,7 @@ using System.Collections;
 /// tiles are encapsulated here to prevent foul play.
 /// </summary>
 public class Board : MonoBehaviour {
-    [Range(4, 16), SerializeField]
+    [Range(4, 32), SerializeField]
     private int size = 8;
     public int boardSize { get { return size; } }
     private GameBoard gameBoard;

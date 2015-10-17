@@ -7,6 +7,7 @@ using MoonSharp.Interpreter.Interop;
 /// </summary>
 [MoonSharp.Interpreter.MoonSharpUserData]
 public class BasicBoard {
+    
     public int size { get; private set; }
     protected BasicTile[] tiles;
     private int[] pawnsLeft;
@@ -66,7 +67,7 @@ public class BasicBoard {
     public static BasicBoard Create(int size = 8)
     {
         BasicBoard b = new BasicBoard(size);
-        b.ResetWithSize(8);
+        b.ResetWithSize(size);
         return b;
     }
     [MoonSharpVisible(false)]

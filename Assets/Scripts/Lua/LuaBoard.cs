@@ -33,5 +33,11 @@ public class LuaBoard : BasicBoard {
     {
         return Create(this);
     }
+
+    [MoonSharpVisible(true)]
+    private int GetSize()
+    {
+        return size;
+    }
     
 }
