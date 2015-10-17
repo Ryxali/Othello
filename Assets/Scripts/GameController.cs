@@ -16,9 +16,15 @@ public class GameController : MonoBehaviour {
         
     }
 
+    public void StartMainMenu()
+    {
+        gameMenu.mainmenuPanel.SetActive(true);
+        gameMenu.endgamePanel.SetActive(false);
+    }
+
     public void StartGame()
     {
-        gameMenu.gameObject.SetActive(false);
+        gameMenu.mainmenuPanel.SetActive(false);
         
         if (gameMenu.player0Dropdown.AISelected())
         {
@@ -71,7 +77,7 @@ public class GameController : MonoBehaviour {
         int p1 = s[BasicTile.State.PLAYER_1];
         Debug.Log("Player 1: " + p0);
         Debug.Log("player 2: " + p1);
-
+        gameMenu.endgamePanel.SetActive(true);
         //Debug.Log("Player 1: " + player0.board.)
     }
 }

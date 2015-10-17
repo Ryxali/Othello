@@ -40,8 +40,8 @@ public class BoardProspector
         script = LuaMachine.Create();
         RegisterVars();
         RegisterFunctions();
-        Debug.Log(Application.streamingAssetsPath + "/AiScripts/" + aiScriptName + ".txt");
-        WWW loader = new WWW("file://" + Application.streamingAssetsPath + "/AiScripts/" + aiScriptName + ".txt");
+        Debug.Log(Application.streamingAssetsPath + "/AiScripts/" + aiScriptName + ".lua");
+        WWW loader = new WWW("file://" + Application.streamingAssetsPath + "/AiScripts/" + aiScriptName + ".lua");
         yield return loader;
 
         if (loader.error != null)

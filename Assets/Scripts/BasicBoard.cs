@@ -128,7 +128,7 @@ public class BasicBoard {
     /// </summary>
     /// <param name="point"></param>
     /// <returns></returns>
-    [MoonSharpVisible(true)]
+    [MoonSharpVisible(false)]   
     private bool InBounds(Point2D point)
     {
         return 0 <= point.x && point.x < size && 0 <= point.y && point.y < size;

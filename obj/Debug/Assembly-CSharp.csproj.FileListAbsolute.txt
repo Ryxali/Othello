@@ -20,3 +20,6 @@ F:\UnityProjs\Othello\Temp\bin\Debug\UnityEngine.Networking.xml
 F:\UnityProjs\Othello\obj\Debug\Assembly-CSharp.csprojResolveAssemblyReference.cache
 F:\UnityProjs\Othello\obj\Debug\Assembly-CSharp.dll
 F:\UnityProjs\Othello\obj\Debug\Assembly-CSharp.pdb
+D:\Users\Niklas\Documents\GitHub\Othello\obj\Debug\Assembly-CSharp.csprojResolveAssemblyReference.cache
+D:\Users\Niklas\Documents\GitHub\Othello\obj\Debug\Assembly-CSharp.dll
+D:\Users\Niklas\Documents\GitHub\Othello\obj\Debug\Assembly-CSharp.pdb
