@@ -25,11 +25,12 @@ public class Board : MonoBehaviour {
         return gameBoard.Copy();
     }
 	void Start () {
-        
+        Debug.Log("---- BOARD.Start()");
         plate.GetComponent<MeshRenderer>().material.mainTextureScale = Vector2.one * size / 2;
         plate.transform.localScale = new Vector3(1, 1, 0) * size;
         plate.transform.localPosition += new Vector3(1, 1) * (size / 2 - 0.5f);
         gameBoard = GameBoard.Create(size, transform, pawn.gameObject);
+        Debug.Log("---- END BOARD.Start()");
 	}
 
     void Update()

@@ -11,12 +11,15 @@ public class GameMenu : MonoBehaviour {
     public Text scorePlayer1;
     void Start()
     {
-        
+        Debug.Log("---- GAME_MENU.Start()");
         //object [] scripts = Resources.LoadAll("MoonSharp/Scripts/");
         /**/
         
-#if UNITY_WEBPLAYER || UNITY_WEBGL
-        //StartCoroutine(Init());
+#if UNITY_WEBPLAYER
+        StartCoroutine(Init());
+#elif UNITY_WEBGL
+        Debug.Log("---- GAME_MENU.StartCoroutine()");
+        StartCoroutine(Init());
 #else
         string[] scripts = System.IO.Directory.GetFiles(Application.streamingAssetsPath + "/AIScripts/", "*.lua");
         for (int i = 0; i < scripts.Length; i++)
@@ -29,10 +32,12 @@ public class GameMenu : MonoBehaviour {
         player0Dropdown.scriptselect.captionText.text = player0Dropdown.scriptselect.options[0].text;
         player1Dropdown.scriptselect.captionText.text = player1Dropdown.scriptselect.options[0].text;
 #endif
+        Debug.Log("---- END GAME_MENU.Start()");
     }
 
     private IEnumerator Init()
     {
+        Debug.Log("---- GAME_MENU.Init()");
         WWW scripts = new WWW("http://www.ryxali.com/Othello/StreamingAssets/AIScripts/fetch.php");
         yield return scripts;
         Debug.Log(scripts.text);
@@ -55,5 +60,6 @@ public class GameMenu : MonoBehaviour {
         }
         player0Dropdown.scriptselect.captionText.text = player0Dropdown.scriptselect.options[0].text;
         player1Dropdown.scriptselect.captionText.text = player1Dropdown.scriptselect.options[0].text;
+        Debug.Log("---- END Game_MENU.Init()");
     }
 }

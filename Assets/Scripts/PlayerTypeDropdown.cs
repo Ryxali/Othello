@@ -8,8 +8,10 @@ public class PlayerTypeDropdown : MonoBehaviour {
     public Dropdown scriptselect;
     private Dropdown self;
     void Start() {
+        Debug.Log("---- PLAYER_TYPE_DROPDOWN.Start()");
         self = GetComponent<Dropdown>();
         scriptselect.gameObject.SetActive(false);
+        Debug.Log("---- END PLAYER_TYPE_DROPDOWN.Start()");
     }
     public void OnValueChange(int newVal) {
         scriptselect.gameObject.SetActive(newVal == 1);

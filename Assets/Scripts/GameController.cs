@@ -8,7 +8,9 @@ public class GameController : MonoBehaviour {
     public GameMenu gameMenu;
     void Start()
     {
-        MoonSharp.Interpreter.UserData.RegisterAssembly();
+        Debug.Log("---- GAME_CONTROLLER.Start()");
+        //MoonSharp.Interpreter.UserData.RegisterAssembly();
+        Debug.Log("---- END GAME_CONTROLLER.Start()");
         //player0 = new PlayerController(Tile.State.PLAYER_0, board);
         //new PlayerController(Tile.State.PLAYER_1, board);
         //System.IO.Directory.GetFiles(Application.dataPath + "/Resources")
