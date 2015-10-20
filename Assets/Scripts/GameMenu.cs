@@ -11,8 +11,14 @@ public class GameMenu : MonoBehaviour {
     public Text scorePlayer1;
     void Start()
     {
-        string[] scripts = System.IO.Directory.GetFiles(Application.streamingAssetsPath + "/AIScripts/", "*.lua");
+        
         //object [] scripts = Resources.LoadAll("MoonSharp/Scripts/");
+        /**/
+        
+#if UNITY_WEBPLAYER || UNITY_WEBGL
+        //StartCoroutine(Init());
+#else
+        string[] scripts = System.IO.Directory.GetFiles(Application.streamingAssetsPath + "/AIScripts/", "*.lua");
         for (int i = 0; i < scripts.Length; i++)
         {
 
@@ -22,7 +28,7 @@ public class GameMenu : MonoBehaviour {
         }
         player0Dropdown.scriptselect.captionText.text = player0Dropdown.scriptselect.options[0].text;
         player1Dropdown.scriptselect.captionText.text = player1Dropdown.scriptselect.options[0].text;
-        StartCoroutine(Init());
+#endif
     }
 
     private IEnumerator Init()
@@ -30,7 +36,24 @@ public class GameMenu : MonoBehaviour {
         WWW scripts = new WWW("http://www.ryxali.com/Othello/StreamingAssets/AIScripts/fetch.php");
         yield return scripts;
         Debug.Log(scripts.text);
-        
-        yield return null;
+        JSONObject t = new JSONObject(scripts.text);
+        Debug.Log(t);
+        Debug.Log(t[0]);
+        for (int i = 0; i < t.Count; i++)
+        {
+            string s = t[i][0].str;
+            string code = "";
+            for (int j = 0; j < t[i][1].Count; j++)
+            {
+                Debug.Log(t[i][1][j].str);
+                code += t[i][1][j].str.Replace("\\", "") + "\n";
+            }
+            Debug.Log(code);
+            BoardProspector.scriptsAvailable.Add(s, code);
+            player0Dropdown.scriptselect.options.Add(new UnityEngine.UI.Dropdown.OptionData(s));
+            player1Dropdown.scriptselect.options.Add(new UnityEngine.UI.Dropdown.OptionData(s));
+        }
+        player0Dropdown.scriptselect.captionText.text = player0Dropdown.scriptselect.options[0].text;
+        player1Dropdown.scriptselect.captionText.text = player1Dropdown.scriptselect.options[0].text;
     }
 }

@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using MoonSharp.Interpreter;
-
+using System.Collections.Generic;
 class Test
 {
     private int Dohickey()
@@ -11,6 +11,7 @@ class Test
 }
 public class BoardProspector
 {
+    public static Dictionary<string, string> scriptsAvailable = new Dictionary<string, string>();
     Script script;
     private LuaBoard currentState;
     Tile.State owner;
@@ -41,18 +42,16 @@ public class BoardProspector
         RegisterVars();
         RegisterFunctions();
         Debug.Log(Application.streamingAssetsPath + "/AiScripts/" + aiScriptName + ".lua");
+#if UNITY_WEBPLAYER || UNITY_WEBGL
+        script.DoString(scriptsAvailable[aiScriptName]);
+        yield return null;
+#else
         WWW loader = new WWW("file://" + Application.streamingAssetsPath + "/AiScripts/" + aiScriptName + ".lua");
         yield return loader;
+        script.DoString(loader.text);
+#endif
 
-        if (loader.error != null)
-        {
-            Debug.LogError(loader.error);
-            script.DoFile(Application.dataPath + "/Resources/MoonSharp/Scripts/BasicAI");
-        }
-        else
-        {
-            script.DoString(loader.text);
-        }
+        
     }
     
 
