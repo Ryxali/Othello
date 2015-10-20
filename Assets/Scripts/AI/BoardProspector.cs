@@ -70,6 +70,7 @@ public class BoardProspector
     {
         Table boardTable = new Table(script);
         boardTable["owner"] = owner;
+        boardTable["opponent"] = BasicTile.Other(owner);
         script.Globals["ai"] = boardTable;
         
     }

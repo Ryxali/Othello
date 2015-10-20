@@ -1,7 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
-
 public class GameMenu : MonoBehaviour {
     public PlayerTypeDropdown player0Dropdown;
     public PlayerTypeDropdown player1Dropdown;
@@ -23,5 +22,15 @@ public class GameMenu : MonoBehaviour {
         }
         player0Dropdown.scriptselect.captionText.text = player0Dropdown.scriptselect.options[0].text;
         player1Dropdown.scriptselect.captionText.text = player1Dropdown.scriptselect.options[0].text;
+        StartCoroutine(Init());
+    }
+
+    private IEnumerator Init()
+    {
+        WWW scripts = new WWW("http://www.ryxali.com/Othello/StreamingAssets/AIScripts/fetch.php");
+        yield return scripts;
+        Debug.Log(scripts.text);
+        
+        yield return null;
     }
 }
