@@ -62,4 +62,9 @@ public class GameMenu : MonoBehaviour {
         player1Dropdown.scriptselect.captionText.text = player1Dropdown.scriptselect.options[0].text;
         Debug.Log("---- END Game_MENU.Init()");
     }
+
+    public void EnterEditor()
+    {
+        Application.LoadLevel("editor");
+    }
 }
